@@ -1,3 +1,3 @@
-testrepository
-==============
-what's this like?
+# Test Repository
+
+This is a test repository to understand how GitHub works.
