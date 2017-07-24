@@ -13,6 +13,5 @@ class Card(object):
     def __str__(self):
         return "%s of %s" % (Card.rank_names[self.rank], Card.suit_names[self.suit])
         
-        
 c1 = Card(2,6)
 print(c1)
