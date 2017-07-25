@@ -1,15 +1,16 @@
 from Card import *
 
-def check_lt():
+def check_comparisons():
     card1 = Card(1, 5)
     card2 = Card(2, 5)
     card3 = Card(1, 4)
+    card4 = Card(2, 5)
     
-    print("Card 1 < Card 2 (True):", card1 < card2)
-    print("Card 3 < Card 1 (True):", card3 < card1)
-    print("Card 3 < Card 2 (True):", card3 < card2)
-    print("Card 2 < Card 1 (False):", card2 < card1)
-    print("Card 1 < Card 3 (False):", card1 < card3)
-    print("Card 2 < Card 3 (False):", card2 < card3)
+    assert card1 > card3
+    assert card1 < card2
+    assert card2 == card4
+    assert card3 != card2
+    print("Tests successful")
     
-check_lt()
+    
+check_comparisons()

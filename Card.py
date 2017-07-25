@@ -13,6 +13,8 @@ class Card():
     def __lt__(self, other):
         return self.suit < other.suit or (self.suit == other.suit and self.rank < other.rank)
         
+    def __eq__(self, other):
+        return self.suit == other.suit and self.rank == other.rank
     
     def __str__(self):
         return "%s of %s" % (Card.rank_names[self.rank], Card.suit_names[self.suit])
