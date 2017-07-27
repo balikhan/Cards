@@ -1,6 +1,5 @@
-from Card import *
-from Deck import *
-from Hand import *
+from Deck import Deck
+#from Hand import Hand
 
 def check_comparisons():
     card1 = Card(1, 5)
@@ -34,7 +33,9 @@ def deal_hand(deck):
     return deck.deal_hands(4,7)
 
 hands = deal_hand(Deck())
-print(hands)
+for hand in hands:
+    
+    print(hand.label, hand.cards)
 #check_comparisons()
 #check_deck()
 

@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Jul 25 18:16:49 2017
-
-@author: Khochi
 """
-from Card import *
-from Hand import *
+from Card import Card
+#import Hand
 import random
 
 class Deck(object):
@@ -58,6 +56,18 @@ class Deck(object):
     def deal_hands(self, num_hands, num_cards):
         res = []
         for hand in range(num_hands):
-            hand = Hand()
+            label = "Hand " + str(hand)
+            hand = Hand(label)
             self.move_card(hand, num_cards)
             res.append(hand)
+        return res
+            
+class Hand(Deck):
+    """
+    Hand class - child of Deck class 
+    Attributes - cards, label
+    """
+    
+    def __init__(self, label=""):
+        self.cards = []
+        self.label = label

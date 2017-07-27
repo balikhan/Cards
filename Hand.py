@@ -1,5 +1,4 @@
-from Deck import *
-from Card import *
+from Deck import Deck
 
 class Hand(Deck):
     """
