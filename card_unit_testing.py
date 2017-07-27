@@ -1,5 +1,7 @@
-from Deck import Deck
+from Card import Card, Deck, Hand
 #from Hand import Hand
+
+#verbose = True
 
 def check_comparisons():
     card1 = Card(1, 5)
@@ -23,19 +25,29 @@ def check_deck():
     popped_card = main_deck.pop_card()
     print(popped_card)
     print("Sorting main deck")
-    main_deck.sort_deck()
+    main_deck.sort()
     main_deck.add_card(popped_card)
     #print(main_deck)
     print("Deck testing successful")
 
 
 def deal_hand(deck):
-    return deck.deal_hands(4,7)
+    """ Veneer function for dealing hands """
+    return deck.deal_hands(4,13)
 
-hands = deal_hand(Deck())
-for hand in hands:
-    
-    print(hand.label, hand.cards)
+def print_hands(hand_list):
+    """ Pretty prints all the cards in each hand """
+    if hand_list == None or len(hand_list) == 0:
+        print("No hands in list")
+    else:
+        for hand in hand_list:
+            print(hand.label + "\n" + str(hand) + "\n")
+
+main_deck = Deck()
+main_deck.shuffle()            
+hands = deal_hand(main_deck)
+print_hands(hands)
+
 #check_comparisons()
 #check_deck()
 
