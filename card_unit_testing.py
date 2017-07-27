@@ -1,5 +1,6 @@
 from Card import *
 from Deck import *
+from Hand import *
 
 def check_comparisons():
     card1 = Card(1, 5)
@@ -28,5 +29,12 @@ def check_deck():
     #print(main_deck)
     print("Deck testing successful")
 
+
+def deal_hand(deck):
+    return deck.deal_hands(4,7)
+
+hands = deal_hand(Deck())
+print(hands)
 #check_comparisons()
 #check_deck()
+

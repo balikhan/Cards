@@ -5,6 +5,7 @@ Created on Tue Jul 25 18:16:49 2017
 @author: Khochi
 """
 from Card import *
+from Hand import *
 import random
 
 class Deck(object):
@@ -42,3 +43,21 @@ class Deck(object):
     def sort_deck(self):
         # sorts cards, returns nothing
         self.cards.sort()
+        
+    def move_card(self, hand, num):
+        # moves num cards from deck list to
+        # hand list. will also work in reverse
+        # with hand to deck transfer
+        #
+        # Probably need to add some safety
+        # code in case there are no more
+        # cards left in the deck
+        for i in range(num):
+            hand.cards.append(self.cards.pop())
+            
+    def deal_hands(self, num_hands, num_cards):
+        res = []
+        for hand in range(num_hands):
+            hand = Hand()
+            self.move_card(hand, num_cards)
+            res.append(hand)
