@@ -67,12 +67,15 @@ class PokerHand(Hand):
         # if 1 (Ace) exists, then we want to add 14 to make sure top
         # end straight (Q,K,A) is counted
         if 1 in rank_list: rank_list.append(14)
+        # Walk through list and make sure ranks are sequential
+        # If 4 counted in a row (1 is without counting any), then return True 
         prev_rank = rank_list[0]
         straight_count = 0
         for rank in rank_list[1:]:
             if rank - prev_rank == 1:
                 straight_count += 1
             else:
+                # Reset straight count if chain broken, start from new card
                 straight_count = 0
             if straight_count >= 4:
                 return True
