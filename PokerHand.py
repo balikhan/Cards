@@ -29,14 +29,27 @@ class PokerHand(Hand):
         self.ranks = {}
         for card in self.cards:
             self.ranks[card.rank] = self.ranks.get(card.rank, 0) + 1
+            
+    def suit_hist(self):
+        """Builds a histogram of the ranks that appear in the hand.
+
+        Stores the result in attribute ranks.
+        """
+        self.suits = {}
+        for card in self.cards:
+            self.suits[card.suit] = self.suits.get(card.suit, 0) + 1
     
-    def has_pair(self):
-        """Returns True if the hand has a pair, False otherwise. """
+    def check_same_rank(self, num_cards):
+        """ Returns if the hand has num_cards of the same rank, False otherwise"""
         self.rank_hist()
         for val in self.ranks.values():
-            if val >= 2:
+            if val >= num_cards:
                 return True
         return False
+        
+    def has_pair(self):
+        """Returns True if the hand has a pair, False otherwise. """
+        return self.check_same_rank(2)
     
     def has_two_pair(self):
         """Returns True if the hand has a two pair, False otherwise. """
@@ -51,11 +64,7 @@ class PokerHand(Hand):
     
     def has_three_kind(self):
         """Returns True if the hand has a three of a kind, False otherwise. """
-        self.rank_hist()
-        for val in self.ranks.values():
-            if val >= 3:
-                return True
-        return False
+        return self.check_same_rank(3)
     
     def has_straight(self):
         """ Returns True if the hand has a straight, False otherwise """
@@ -94,42 +103,85 @@ class PokerHand(Hand):
     def has_full_house(self):
         """Returns True if the hand has a full house, False otherwise. """
         self.rank_hist()
-        lookout = [2,3]
-        for val in self.ranks.values():
-            if val in lookout and len(lookout) > 0:
-                lookout.remove(val)
-        if len(lookout) == 0:
+        rank_vals = list(self.ranks.values())
+        rank_vals.sort(reverse=True)
+        if sum(rank_vals[:2]) >= 5:
             return True
         else:
             return False
     
     def has_four_kind(self):
         """Returns True if the hand has a four of a kind, False otherwise. """
-        pass
+        return self.check_same_rank(4)
     
     def has_straight_flush(self):
         """Returns True if the hand has a straight flush, False otherwise. """
-        pass
+        
+        self.suit_hist()
+        # create a zipped list to be reverse sorted to get the
+        # max frequency and associated suit number
+        suit_rank = list(zip(self.suits.values(),self.suits.keys()))
+        suit_rank.sort(reverse=True)
+        # if max suit freq is not greater than 5, then no flush
+        if not suit_rank[0][0] >= 5: return False
+        
+        suit_hand = PokerHand()
+        max_suit = suit_rank[0][1]
+        
+        # Create a sub hand with only cards of the max suit
+        # and then run the has_straight function on it
+        for card in self.cards:
+            if card.suit == max_suit:
+                suit_hand.add_card(card)
+        return suit_hand.has_straight()
+    
+    def classify(self):
+        """ Classifies the current hand according to cards """
+        if self.has_straight_flush():
+            self.label = "Straight Flush"
+        elif self.has_four_kind():
+            self.label = "Four of a Kind"
+        elif self.has_full_house():
+            self.label = "Full House"
+        elif self.has_flush():
+            self.label = "Flush"
+        elif self.has_straight():
+            self.label = "Straight"
+        elif self.has_three_kind():
+            self.label = "Three of a Kind"
+        elif self.has_two_pair():
+            self.label = "Two Pair"
+        elif self.has_pair():
+            self.label = "Pair"
+        else:
+            self.label = "Nothing"
 
-
-if __name__ == '__main__':
-    # make a deck
+def check_deck():
     deck = Deck()
     deck.shuffle()
-
+    num_hands = 7
     # deal the cards and classify the hands
-    for i in range(7):
+    for i in range(num_hands):
         hand = PokerHand()
-        #deck.move_cards(hand, 7)
-        hand.add_card(Card(0,5))
-        hand.add_card(Card(1,5))
-        hand.add_card(Card(2,5))
-        hand.add_card(Card(0,7))
-        hand.add_card(Card(3,6))
+        deck.move_cards(hand, 52//num_hands)
         hand.sort()
         print (hand)
-        print (hand.has_full_house())
-        print(hand.ranks)
+        hand.classify()
+        print (hand.label)
         print ('')
+
+def check_hand():
+    hand = PokerHand()
+    hand.add_card(Card(1,1))
+    hand.add_card(Card(1,10))
+    hand.add_card(Card(1,11))
+    hand.add_card(Card(1,12))
+    hand.add_card(Card(2,6))
+    hand.add_card(Card(1,13))
+    return hand.has_straight_flush()
+    
+if __name__ == '__main__':
+    # make a deck
+    print(check_deck())
         
 
