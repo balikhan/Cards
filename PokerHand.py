@@ -11,7 +11,9 @@ from Card import *
 
 
 class PokerHand(Hand):
-
+    
+    poker_hands = ["Straight Flush","Four of a Kind", "Full House", "Flush", "Straight","Three of a Kind","Two Pair","Pair", "Nothing"]
+    
     def suit_hist(self):
         """Builds a histogram of the suits that appear in the hand.
 
@@ -138,37 +140,35 @@ class PokerHand(Hand):
     def classify(self):
         """ Classifies the current hand according to cards """
         if self.has_straight_flush():
-            self.label = "Straight Flush"
+            self.label = PokerHand.poker_hands[0]
         elif self.has_four_kind():
-            self.label = "Four of a Kind"
+            self.label = PokerHand.poker_hands[1]
         elif self.has_full_house():
-            self.label = "Full House"
+            self.label = PokerHand.poker_hands[2]
         elif self.has_flush():
-            self.label = "Flush"
+            self.label = PokerHand.poker_hands[3]
         elif self.has_straight():
-            self.label = "Straight"
+            self.label = PokerHand.poker_hands[4]
         elif self.has_three_kind():
-            self.label = "Three of a Kind"
+            self.label = PokerHand.poker_hands[5]
         elif self.has_two_pair():
-            self.label = "Two Pair"
+            self.label = PokerHand.poker_hands[6]
         elif self.has_pair():
-            self.label = "Pair"
+            self.label = PokerHand.poker_hands[7]
         else:
-            self.label = "Nothing"
+            self.label = PokerHand.poker_hands[8]
 
-def check_deck():
+classifications = {}
+def check_deck(hand_size=5):
     deck = Deck()
     deck.shuffle()
-    num_hands = 7
+    hand_size = 5
     # deal the cards and classify the hands
-    for i in range(num_hands):
+    for i in range(52//hand_size):
         hand = PokerHand()
-        deck.move_cards(hand, 52//num_hands)
-        hand.sort()
-        print (hand)
+        deck.move_cards(hand, hand_size)
         hand.classify()
-        print (hand.label)
-        print ('')
+        classifications[hand.label] = classifications.get(hand.label, 0) + 1
 
 def check_hand():
     hand = PokerHand()
@@ -182,6 +182,11 @@ def check_hand():
     
 if __name__ == '__main__':
     # make a deck
-    print(check_deck())
-        
+    for i in range(100000):
+        check_deck()
+    
+    total_hands = sum(classifications.values())
+    print(total_hands)
+    for poker_hand in PokerHand.poker_hands:
+        print("%02.4f %% : %s " % (classifications.get(poker_hand,0)/total_hands*100, poker_hand))
 
