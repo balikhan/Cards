@@ -93,7 +93,15 @@ class PokerHand(Hand):
     
     def has_full_house(self):
         """Returns True if the hand has a full house, False otherwise. """
-        pass
+        self.rank_hist()
+        lookout = [2,3]
+        for val in self.ranks.values():
+            if val in lookout and len(lookout) > 0:
+                lookout.remove(val)
+        if len(lookout) == 0:
+            return True
+        else:
+            return False
     
     def has_four_kind(self):
         """Returns True if the hand has a four of a kind, False otherwise. """
@@ -112,10 +120,16 @@ if __name__ == '__main__':
     # deal the cards and classify the hands
     for i in range(7):
         hand = PokerHand()
-        deck.move_cards(hand, 7)
+        #deck.move_cards(hand, 7)
+        hand.add_card(Card(0,5))
+        hand.add_card(Card(1,5))
+        hand.add_card(Card(2,5))
+        hand.add_card(Card(0,7))
+        hand.add_card(Card(3,6))
         hand.sort()
         print (hand)
-        print (hand.has_straight())
+        print (hand.has_full_house())
+        print(hand.ranks)
         print ('')
         
 
